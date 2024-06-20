@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="signGo()">Sign in with Google</button>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAi8IGljgru8Al6vEPmnobUOFizqC-DHG0",
+            authDomain: "testingmike-a4514.firebaseapp.com",
+            projectId: "testingmike-a4514",
+            storageBucket: "testingmike-a4514.appspot.com",
+            messagingSenderId: "1064008616442",
+            appId: "1:1064008616442:web:40db3fc5b6c9d483977c43"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        const signGo = () => {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    // The signed-in user info.
+                    const user = result.user;
+                    console.log(user);
+                    sendEmailVerification(auth.currentUser)
+                        .then(() => {
+                            console.log('sent');
+                        });
+                        window.location.href = 'dashboard.html'
+                }).catch((error) => {
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorCode, errorMessage);
+                });
+
+        }
+        window.signGo = signGo
+    </script>
+</body>
+
+</html>
