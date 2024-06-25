@@ -16,11 +16,14 @@
     <input type="text" id="todo" placeholder="Todo">
     <button onclick="addTodo()">Submit</button>
 
+    <div id="show"></div>
+
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getStorage, ref as stRef } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
         // Your web app's Firebase configuration
@@ -38,6 +41,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
+        const storage = getStorage(app)
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -78,8 +82,18 @@
         onValue(newRef, (snapshot) => {
             const data = snapshot.val();
             console.log(data);
+            data.map((val, i)=>{
+                show.innerHTML += `
+                    <p>${i+1}</p>
+                    <h3>${val.myTodo}</h3>
+                    <p>${val.time}</p>
+                `
+            })
             // updateStarCount(postElement, data);
         });
+
+
+        const storageRef = stRef(storage);
     </script>
 </body>
 
